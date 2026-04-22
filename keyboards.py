@@ -37,3 +37,10 @@ main_kb = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+back_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="⬅ В меню")]
+    ],
+    resize_keyboard=True
+)

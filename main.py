@@ -27,8 +27,11 @@ async def main():
     dp.callback_query.register(get_category, ExpenseState.category)
     dp.callback_query.register(confirm, ExpenseState.confirm)
 
-    # income / savings
+    # income /  income
     dp.message.register(income, F.text.startswith("/income"))
+    dp.message.register(income, F.text == "💵 Дохід")
+
+    # savings
     dp.message.register(show, F.text == "🏦 Заощадження")
     dp.message.register(edit, F.text.startswith("/savings"))
 
@@ -36,8 +39,15 @@ async def main():
     dp.message.register(stats_menu, F.text == "📊 Статистика")
     dp.callback_query.register(stats_handler)
 
+    dp.message.register(back_to_menu, F.text == "⬅ В меню")
+
     await dp.start_polling(bot)
+
+async def back_to_menu(message, state: FSMContext):
+    await state.clear()
+    await message.answer("🔙 Повернулись в меню", reply_markup=main_kb)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+

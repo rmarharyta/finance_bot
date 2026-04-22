@@ -2,14 +2,23 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from states import ExpenseState
 from db import add_expense
-from keyboards import categories, confirm_kb
+from keyboards import categories, confirm_kb, back_kb
 
 async def start_expense(message, state: FSMContext):
-    await message.answer("Введіть суму витрати:")
+    await state.clear()
+    await message.answer("Введіть суму витрати:",
+        reply_markup=back_kb)
     await state.set_state(ExpenseState.amount)
 
 async def get_amount(message, state: FSMContext):
     text = message.text.replace(",", ".").strip()
+
+    if text == "⬅ В меню":
+        await state.clear()
+        from keyboards import main_kb
+        await message.answer("🔙 В меню", reply_markup=main_kb)
+        return
+    
     try:
         amount = float(text)
     except ValueError:
