@@ -17,3 +17,10 @@ stats_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="🗂 6 міс", callback_data="half_year")],
     [InlineKeyboardButton(text="📊 Рік", callback_data="year")]
 ])
+
+confirm_kb = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(text="✔ Так", callback_data="yes"),
+        InlineKeyboardButton(text="❌ Ні", callback_data="no")
+    ]
+])

@@ -1,31 +1,43 @@
 from aiogram.fsm.context import FSMContext
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from states import ExpenseState
 from db import add_expense
-from keyboards import categories
+from keyboards import categories, confirm_kb
 
 async def start_expense(message, state: FSMContext):
     await message.answer("Введіть суму витрати:")
     await state.set_state(ExpenseState.amount)
 
 async def get_amount(message, state: FSMContext):
-    await state.update_data(amount=float(message.text))
-    await message.answer("Оберіть категорію витрати:", reply_markup=categories)
-    await state.set_state(ExpenseState.category)
+    text = message.text.replace(",", ".").strip()
+    try:
+        amount = float(text)
+    except ValueError:
+        await message.answer("❌ Невірний формат. Введіть число (наприклад 100 або 99.5).")
+        return
     
+    await state.update_data(amount=amount)
+    await message.answer("Оберіть категорію витрати:", reply_markup=categories)
+
+    await state.set_state(ExpenseState.category)
+
 async def get_category(callback, state: FSMContext):
+    await callback.answer()
     await state.update_data(category=callback.data)
     
     data = await state.get_data()
     
     await callback.message.answer(
-        f"Підтвердіть додавання витрати: {data['amount']} ?", 
+        f"Підтвердіть додавання витрати: {data['amount']} ?",
+        reply_markup=confirm_kb 
         )
     
     await state.set_state(ExpenseState.confirm)
     
 async def confirm(callback, state: FSMContext):
+    await callback.answer()
     data = await state.get_data()
-    
+
     if callback.data == "yes":
         await add_expense(
             callback.from_user.id,
@@ -33,6 +45,8 @@ async def confirm(callback, state: FSMContext):
             data['category']
         )
         await callback.message.answer("✔ Додано")
-    
+
+    else:
+        await callback.message.answer("❌ Скасовано")
+
     await state.clear()
-    

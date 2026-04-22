@@ -22,9 +22,9 @@ async def main():
 
     # expense FSM
     dp.message.register(start_expense, F.text == "➕ Витрата")
-    dp.message.register(get_amount)
-    dp.callback_query.register(get_category)
-    dp.callback_query.register(confirm)
+    dp.message.register(get_amount, ExpenseState.amount)
+    dp.callback_query.register(get_category, ExpenseState.category)
+    dp.callback_query.register(confirm, ExpenseState.confirm)
 
     # income / savings
     dp.message.register(income, F.text.startswith("/income"))
