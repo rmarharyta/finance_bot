@@ -3,7 +3,7 @@ from db import get_income, get_sum, get_savings, set_savings
 async def calculate(user_id, period_sql=""):
     income = await get_income(user_id)
     expenses = await get_sum(user_id, period_sql)
-    savings = await get_savings(user_id),
+    savings = await get_savings(user_id)
     
     balance = income - expenses
     
