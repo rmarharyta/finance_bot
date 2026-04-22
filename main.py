@@ -4,6 +4,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import TOKEN
 from db import init_db
+from states import ExpenseState
 
 from handlers.start import start
 from handlers.expense import start_expense, get_amount, get_category, confirm
