@@ -13,6 +13,8 @@ async def income_amount(message, state: FSMContext):
     text = message.text.replace(",", ".").strip()
 
     if text == "⬅ В меню":
+        await state.clear()
+        await message.answer("🔙 Повернулись в меню", reply_markup=main_kb)
         return
 
     try:
