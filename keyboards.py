@@ -1,4 +1,9 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    ReplyKeyboardMarkup,
+    KeyboardButton
+)
 
 categories = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="🍽 Їжа", callback_data="food")],
