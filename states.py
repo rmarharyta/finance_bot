@@ -5,3 +5,8 @@ class ExpenseState(StatesGroup):
     category = State()
     confirm = State()
 
+class IncomeState(StatesGroup):
+    amount = State()
+
+class SavingsState(StatesGroup):
+    amount = State()

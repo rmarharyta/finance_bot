@@ -16,8 +16,8 @@ def period_sql(period):
     return ""
 
 async def stats_menu(message):
-    from keyboards import stats_kb
-    await message.answer("📊 Обери період:", reply_markup=stats_kb)
+    from keyboards import stats_kb, back_kb
+    await message.answer("📊 Обери період:", reply_markup=stats_kb, reply_markup=back_kb)
     
 async def stats_handler(callback: CallbackQuery):
     

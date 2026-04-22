@@ -5,11 +5,11 @@ from aiogram.fsm.context import FSMContext
 
 from config import TOKEN
 from db import init_db
-from states import ExpenseState
+from states import ExpenseState, IncomeState, SavingsState
 
 from handlers.start import start
 from handlers.expense import start_expense, get_amount, get_category, confirm
-from handlers.income import income
+from handlers.income import income_start, income_amount
 from handlers.savings import show, edit
 from handlers.stats import stats_menu, stats_handler
 
@@ -31,13 +31,13 @@ async def main():
     dp.callback_query.register(confirm, ExpenseState.confirm)
 
     # income /  income
-    dp.message.register(income, F.text.startswith("/income"))
-    dp.message.register(income, F.text == "💵 Дохід")
+    dp.message.register(income_start, F.text == "💵 Дохід")
+    dp.message.register(income_amount, IncomeState.amount)
 
     # savings
     dp.message.register(show, F.text == "🏦 Заощадження")
-    dp.message.register(edit, F.text.startswith("/savings"))
-
+    dp.message.register(edit, SavingsState.amount)
+    
     # stats
     dp.message.register(stats_menu, F.text == "📊 Статистика")
     dp.callback_query.register(stats_handler)
