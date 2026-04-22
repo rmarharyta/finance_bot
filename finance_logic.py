@@ -16,4 +16,4 @@ async def calculate(user_id, period_sql=""):
         
         await set_savings(user_id, savings)
         
-    return savings
+    return income, expenses, balance, savings
