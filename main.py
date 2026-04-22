@@ -13,6 +13,8 @@ from handlers.income import income
 from handlers.savings import show, edit
 from handlers.stats import stats_menu, stats_handler
 
+from keyboards import main_kb
+
 bot = Bot(TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
@@ -41,6 +43,7 @@ async def main():
     dp.callback_query.register(stats_handler)
 
     dp.message.register(back_to_menu, F.text == "⬅ В меню")
+    
 
     await dp.start_polling(bot)
 
