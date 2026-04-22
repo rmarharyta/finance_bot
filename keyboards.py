@@ -24,3 +24,11 @@ confirm_kb = InlineKeyboardMarkup(inline_keyboard=[
         InlineKeyboardButton(text="❌ Ні", callback_data="no")
     ]
 ])
+
+main_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="➕ Витрата"), KeyboardButton(text="💵 Дохід")],
+        [KeyboardButton(text="🏦 Заощадження"), KeyboardButton(text="📊 Статистика")]
+    ],
+    resize_keyboard=True
+)
