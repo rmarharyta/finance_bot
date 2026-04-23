@@ -11,7 +11,7 @@ from handlers.start import start
 from handlers.expense import start_expense, get_amount, get_category, confirm
 from handlers.income import income_start, income_confirm, income_amount, income_add, income_set 
 from handlers.savings import savings_add, savings_amount, savings_confirm, savings_set, show, edit
-from handlers.stats import stats_menu, stats_handler
+from handlers.stats import finance_chart, stats_menu, stats_handler
 
 from keyboards import main_kb
 
@@ -52,6 +52,8 @@ async def main():
     dp.message.register(stats_menu, F.text == "📊 Статистика")
     dp.callback_query.register(stats_handler)
 
+    dp.message.register(finance_chart, F.text == "📈 Графік")
+    
     dp.message.register(back_to_menu, F.text == "⬅ В меню")
     
 

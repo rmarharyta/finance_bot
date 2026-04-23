@@ -33,7 +33,8 @@ confirm_kb = InlineKeyboardMarkup(inline_keyboard=[
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="➕ Витрата"), KeyboardButton(text="💵 Дохід")],
-        [KeyboardButton(text="🏦 Заощадження"), KeyboardButton(text="📊 Статистика")]
+        [KeyboardButton(text="🏦 Заощадження"), KeyboardButton(text="📊 Статистика")],
+        [KeyboardButton(text="📈 Графік")]
     ],
     resize_keyboard=True
 )

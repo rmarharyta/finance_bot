@@ -15,8 +15,11 @@ async def init_db():
         
         await db.execute("""
             CREATE TABLE IF NOT EXISTS income (
-                user_id INTEGER PRIMARY KEY,
-                amount REAL)
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                amount REAL,
+                date TEXT DEFAULT CURRENT_TIMESTAMP
+                )
             """)
         
         await db.execute("""
@@ -54,6 +57,16 @@ async def get_by_category(user_id, period_sql=""):
             GROUP BY category""", (user_id,))
         return await cur.fetchall() 
         
+async def get_expenses_by_days(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cur = await db.execute("""
+            SELECT date(date), SUM(amount)
+            FROM expenses
+            WHERE user_id=?
+            GROUP BY date(date)
+            ORDER BY date(date)
+        """, (user_id,))
+        return await cur.fetchall()
         
 
 async def get_income(user_id):
@@ -64,6 +77,17 @@ async def get_income(user_id):
         )
         row = await cur.fetchone()
         return row[0] if row else 0
+    
+async def get_income_by_days(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cur = await db.execute("""
+            SELECT date(date), SUM(amount)
+            FROM income
+            WHERE user_id=?
+            GROUP BY date(date)
+            ORDER BY date(date)
+        """, (user_id,))
+        return await cur.fetchall()
     
 async def set_income(user_id, amount):
     async with aiosqlite.connect(DB_NAME) as db:
