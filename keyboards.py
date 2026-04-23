@@ -48,7 +48,7 @@ back_kb = ReplyKeyboardMarkup(
 
 income_kb = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="➕ Додати дохід"), KeyboardButton(text="💵 Змінити дохід")],
+        [KeyboardButton(text="➕ Додати дохід")],
         [KeyboardButton(text="⬅ В меню")]
     ],
     resize_keyboard=True
@@ -56,7 +56,7 @@ income_kb = ReplyKeyboardMarkup(
 
 savings_kb = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="➕ Додати заощадження"), KeyboardButton(text="💰 Змінити заощадження")],
+        [KeyboardButton(text="➕ Додати заощадження")],
         [KeyboardButton(text="⬅ В меню")]
     ],
     resize_keyboard=True

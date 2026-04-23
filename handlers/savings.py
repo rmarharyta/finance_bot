@@ -23,13 +23,6 @@ async def savings_add(message, state: FSMContext):
     await state.set_state(SavingsState.amount)
 
 
-# 💰 змінити
-async def savings_set(message, state: FSMContext):
-    await state.set_data({"mode": "set"})
-    await message.answer("Введіть нову суму:", reply_markup=back_kb)
-    await state.set_state(SavingsState.amount)
-
-
 # введення суми
 async def savings_amount(message, state: FSMContext):
     text = message.text.replace(",", ".").strip()

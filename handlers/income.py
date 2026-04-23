@@ -30,17 +30,6 @@ async def income_add(message: Message, state: FSMContext):
     await state.set_state(IncomeState.amount)
 
 
-# 💰 Змінити (це тепер просто додавання нового запису, але режим окремий для UX)
-async def income_set(message: Message, state: FSMContext):
-    await state.update_data(mode="set")
-
-    await message.answer(
-        "Введіть новий дохід:",
-        reply_markup=back_kb
-    )
-
-    await state.set_state(IncomeState.amount)
-
 
 # ✍️ Ввід суми
 async def income_amount(message: Message, state: FSMContext):
