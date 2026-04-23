@@ -1,6 +1,6 @@
 from aiogram.types import CallbackQuery, Message
 from finance_logic import calculate
-from graph import generate_finance_chart
+from handlers.graph import generate_finance_chart
 from db import get_by_category, get_income_by_days, get_expenses_by_days
 
 def period_sql(period):
