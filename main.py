@@ -9,8 +9,8 @@ from states import ExpenseState, IncomeState, SavingsState
 
 from handlers.start import start
 from handlers.expense import start_expense, get_amount, get_category, confirm
-from handlers.income import income_start, income_confirm, income_amount, income_add, income_set 
-from handlers.savings import savings_add, savings_amount, savings_confirm, savings_set, show
+from handlers.income import income_start, income_confirm, income_amount, income_add
+from handlers.savings import savings_add, savings_amount, savings_confirm, show
 from handlers.stats import finance_chart, stats_menu, stats_handler
 
 from keyboards import main_kb
@@ -35,7 +35,6 @@ async def main():
     dp.message.register(income_start, F.text == "💵 Дохід")
 
     dp.message.register(income_add, F.text == "➕ Додати дохід")
-    dp.message.register(income_set, F.text == "💵 Змінити дохід")
 
     dp.message.register(income_amount, IncomeState.amount)
     dp.callback_query.register(income_confirm, IncomeState.confirm)
@@ -44,7 +43,6 @@ async def main():
     dp.message.register(show, F.text == "🏦 Заощадження")
     
     dp.message.register(savings_add, F.text == "➕ Додати заощадження")
-    dp.message.register(savings_set, F.text == "💰 Змінити заощадження")
     
     dp.message.register(savings_amount, SavingsState.amount)
     dp.callback_query.register(savings_confirm, SavingsState.confirm)    

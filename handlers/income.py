@@ -48,44 +48,23 @@ async def income_amount(message: Message, state: FSMContext):
 
     await state.update_data(amount=amount)
 
-    data = await state.get_data()
-    mode = data.get("mode")
-
-    if mode not in ["add", "set"]:
-        await state.clear()
-        await message.answer("❌ Помилка стану. Почніть знову", reply_markup=main_kb)
-        return
-
-    action = "додати до доходу" if mode == "add" else "записати як новий дохід"
-
     await message.answer(
-        f"💵 Підтвердити: {action} {amount}?",
+        f"💵 Підтвердити додавання {amount}?",
         reply_markup=confirm_kb
     )
 
     await state.set_state(IncomeState.confirm)
-
 
 # ✔️ підтвердження
 async def income_confirm(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
     data = await state.get_data()
-    mode = data.get("mode")
     amount = data.get("amount")
 
     if callback.data == "yes":
-
-        # У новій моделі ОБИДВА варіанти = новий запис (історія)
-        # але логіка UI різна
-
         await add_income(callback.from_user.id, amount)
-
-        if mode == "add":
-            await callback.message.answer("💵 Дохід додано", reply_markup=main_kb)
-        else:
-            await callback.message.answer("💵 Дохід оновлено (додано запис)", reply_markup=main_kb)
-
+        await callback.message.answer("💵 Дохід додано", reply_markup=main_kb)
     else:
         await callback.message.answer("❌ Скасовано", reply_markup=main_kb)
 

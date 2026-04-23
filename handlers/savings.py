@@ -23,8 +23,9 @@ async def savings_add(message, state: FSMContext):
     await state.set_state(SavingsState.amount)
 
 
+
 # введення суми
-async def savings_amount(message, state: FSMContext):
+async def savings_amount(message: Message, state: FSMContext):
     text = message.text.replace(",", ".").strip()
 
     if text == "⬅ В меню":
@@ -35,42 +36,29 @@ async def savings_amount(message, state: FSMContext):
     try:
         amount = float(text)
     except ValueError:
-        await message.answer("❌ Введи число")
+        await message.answer("❌ Введіть число")
         return
 
     await state.update_data(amount=amount)
 
-    data = await state.get_data()
-    mode = data.get("mode")
-
-    action = "додати" if mode == "add" else "змінити на"
-
     await message.answer(
-        f"Підтвердити: {action} {amount}?",
+        f"🏦 Підтвердити додавання {amount}?",
         reply_markup=confirm_kb
     )
 
     await state.set_state(SavingsState.confirm)
 
 
-# підтвердження
+# ✔️ підтвердження
 async def savings_confirm(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
     data = await state.get_data()
+    amount = data.get("amount")
 
     if callback.data == "yes":
-        amount = data.get("amount")
-        mode = data.get("mode")
-
-        if mode == "add":
-            await add_savings(callback.from_user.id, amount)
-            await callback.message.answer("🏦 Додано", reply_markup=main_kb)
-
-        elif mode == "set":
-            await set_savings(callback.from_user.id, amount)
-            await callback.message.answer("🏦 Оновлено", reply_markup=main_kb)
-
+        await add_savings(callback.from_user.id, amount)
+        await callback.message.answer("🏦 Додано", reply_markup=main_kb)
     else:
         await callback.message.answer("❌ Скасовано", reply_markup=main_kb)
 
