@@ -60,23 +60,24 @@ async def get_by_category(user_id, period_sql=""):
 async def get_expenses_by_days(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
         cur = await db.execute("""
-            SELECT date(date), SUM(amount)
+            SELECT DATE(date), SUM(amount)
             FROM expenses
             WHERE user_id=?
-            GROUP BY date(date)
-            ORDER BY date(date)
+            GROUP BY DATE(date)
+            ORDER BY DATE(date)
         """, (user_id,))
         return await cur.fetchall()
         
 
-async def get_income(user_id):
-    
+async def get_income(user_id, period_sql=""):
     async with aiosqlite.connect(DB_NAME) as db:
-        cur = await db.execute(
-            "SELECT amount FROM income WHERE user_id=?", (user_id,)
-        )
+        cur = await db.execute(f"""
+            SELECT SUM(amount)
+            FROM income
+            WHERE user_id=? {period_sql}
+        """, (user_id,))
         row = await cur.fetchone()
-        return row[0] if row else 0
+        return row[0] or 0
     
 async def get_income_by_days(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
@@ -89,21 +90,12 @@ async def get_income_by_days(user_id):
         """, (user_id,))
         return await cur.fetchall()
     
-async def set_income(user_id, amount):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute(
-            "INSERT INTO income (user_id, amount) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET amount=excluded.amount",
-            (user_id, amount)
-        )
-        await db.commit()
         
 async def add_income(user_id, amount):
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute("""
             INSERT INTO income (user_id, amount)
             VALUES (?, ?)
-            ON CONFLICT(user_id) DO UPDATE
-            SET amount = amount + excluded.amount
         """, (user_id, amount))
         await db.commit()
 
