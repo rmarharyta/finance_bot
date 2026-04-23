@@ -73,7 +73,15 @@ async def set_income(user_id, amount):
         )
         await db.commit()
         
-
+async def add_income(user_id, amount):
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute("""
+            INSERT INTO income (user_id, amount)
+            VALUES (?, ?)
+            ON CONFLICT(user_id) DO UPDATE
+            SET amount = amount + excluded.amount
+        """, (user_id, amount))
+        await db.commit()
 
 async def get_savings(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
@@ -89,4 +97,14 @@ async def set_savings(user_id, amount):
             "INSERT OR REPLACE INTO savings (user_id, amount) VALUES (?, ?)",
             (user_id, amount)
         )
+        await db.commit()
+
+async def add_savings(user_id, amount):
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute("""
+            INSERT INTO savings (user_id, amount)
+            VALUES (?, ?)
+            ON CONFLICT(user_id) DO UPDATE
+            SET amount = amount + excluded.amount
+        """, (user_id, amount))
         await db.commit()

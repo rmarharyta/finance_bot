@@ -7,6 +7,8 @@ class ExpenseState(StatesGroup):
 
 class IncomeState(StatesGroup):
     amount = State()
+    confirm = State()
 
 class SavingsState(StatesGroup):
     amount = State()
+    confirm = State()
